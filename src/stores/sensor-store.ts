@@ -1,4 +1,5 @@
 import * as Battery from 'expo-battery';
+import * as Location from 'expo-location';
 import { AppState, type AppStateStatus } from 'react-native';
 import { create } from 'zustand';
 
@@ -13,6 +14,8 @@ export type BatteryData = {
   state: Battery.BatteryState;
   lowPowerMode: boolean;
 };
+
+export type LocationPermissionState = 'unknown' | 'granted' | 'denied' | 'blocked';
 
 export type SensorJournalEntry = {
   id: string;
@@ -30,6 +33,8 @@ type SensorState = {
   sampleCount: number;
   updateInterval: number;
   battery: BatteryData;
+  location: Location.LocationObject | null;
+  locationPermission: LocationPermissionState;
   recordTransition: (status: AppStateStatus) => void;
   recordAccelerometerData: (data: AccelerometerData) => void;
   recordAccelerometerStatus: (active: boolean) => void;
@@ -37,6 +42,8 @@ type SensorState = {
   setBatteryLevel: (level: number) => void;
   setBatteryState: (state: Battery.BatteryState) => void;
   setLowPowerMode: (enabled: boolean) => void;
+  setLocation: (location: Location.LocationObject) => void;
+  setLocationPermission: (permission: LocationPermissionState) => void;
 };
 
 const initialStatus = AppState.currentState ?? 'active';
@@ -62,6 +69,8 @@ export const useSensorStore = create<SensorState>((set) => ({
     state: Battery.BatteryState.UNKNOWN,
     lowPowerMode: false,
   },
+  location: null,
+  locationPermission: 'unknown',
   recordTransition: (status) =>
     set((state) => {
       if (state.currentStatus === status) {
@@ -118,4 +127,6 @@ export const useSensorStore = create<SensorState>((set) => ({
     set((state) => ({ battery: { ...state.battery, state: batteryState } })),
   setLowPowerMode: (lowPowerMode) =>
     set((state) => ({ battery: { ...state.battery, lowPowerMode } })),
+  setLocation: (location) => set({ location }),
+  setLocationPermission: (locationPermission) => set({ locationPermission }),
 }));

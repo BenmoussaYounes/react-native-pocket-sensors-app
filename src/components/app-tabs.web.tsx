@@ -30,6 +30,9 @@ export default function AppTabs() {
           <TabTrigger name="battery" href="/battery" asChild>
             <TabButton>Batterie</TabButton>
           </TabTrigger>
+          <TabTrigger name="location" href="/location" asChild>
+            <TabButton>Position</TabButton>
+          </TabTrigger>
         </CustomTabList>
       </TabList>
     </Tabs>

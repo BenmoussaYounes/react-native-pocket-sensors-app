@@ -1,29 +1,26 @@
 import { ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { LifecycleJournal } from '@/components/lifecycle-journal';
-import { LifecycleStatusCard } from '@/components/lifecycle-status-card';
+import { LocationCard } from '@/components/location-card';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 
-export default function HomeScreen() {
+export default function LocationScreen() {
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
         <ScrollView contentContainerStyle={styles.content}>
           <ThemedText type="code" style={styles.eyebrow}>
-            MONITEUR D'APPLICATION
+            PERMISSION SENSIBLE
           </ThemedText>
           <ThemedText type="subtitle" style={styles.title}>
-            Cycle de vie
+            Position
           </ThemedText>
           <ThemedText themeColor="textSecondary" style={styles.intro}>
-            L'etat et les mouvements de l'application sont suivis en temps reel.
+            La demande de localisation ne partira qu'après votre action explicite.
           </ThemedText>
-
-          <LifecycleStatusCard />
-          <LifecycleJournal />
+          <LocationCard />
         </ScrollView>
       </SafeAreaView>
     </ThemedView>
@@ -49,7 +46,7 @@ const styles = StyleSheet.create({
     gap: Spacing.three,
   },
   eyebrow: {
-    color: '#d97706',
+    color: '#7c3aed',
     letterSpacing: 1.5,
   },
   title: {
@@ -57,6 +54,6 @@ const styles = StyleSheet.create({
   },
   intro: {
     marginTop: -Spacing.two,
-    maxWidth: 360,
+    maxWidth: 380,
   },
 });

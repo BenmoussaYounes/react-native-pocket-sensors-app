@@ -28,6 +28,8 @@ export function useAccelerometer() {
       let permission = await Accelerometer.getPermissionsAsync();
       if (!permission.granted && permission.canAskAgain) {
         permission = await Accelerometer.requestPermissionsAsync();
+      } else {
+        console.log(' Accelerometer permission already granted or cannot ask again');
       }
 
       if (!permission.granted || !isMounted) {
