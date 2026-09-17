@@ -1,3 +1,4 @@
+import * as Battery from 'expo-battery';
 import { AppState, type AppStateStatus } from 'react-native';
 import { create } from 'zustand';
 
@@ -5,6 +6,12 @@ export type AccelerometerData = {
   x: number;
   y: number;
   z: number;
+};
+
+export type BatteryData = {
+  level: number;
+  state: Battery.BatteryState;
+  lowPowerMode: boolean;
 };
 
 export type SensorJournalEntry = {
@@ -22,10 +29,14 @@ type SensorState = {
   magnitude: number;
   sampleCount: number;
   updateInterval: number;
+  battery: BatteryData;
   recordTransition: (status: AppStateStatus) => void;
   recordAccelerometerData: (data: AccelerometerData) => void;
   recordAccelerometerStatus: (active: boolean) => void;
   setUpdateInterval: (interval: number) => void;
+  setBatteryLevel: (level: number) => void;
+  setBatteryState: (state: Battery.BatteryState) => void;
+  setLowPowerMode: (enabled: boolean) => void;
 };
 
 const initialStatus = AppState.currentState ?? 'active';
@@ -46,6 +57,11 @@ export const useSensorStore = create<SensorState>((set) => ({
   magnitude: 0,
   sampleCount: 0,
   updateInterval: 200,
+  battery: {
+    level: -1,
+    state: Battery.BatteryState.UNKNOWN,
+    lowPowerMode: false,
+  },
   recordTransition: (status) =>
     set((state) => {
       if (state.currentStatus === status) {
@@ -96,4 +112,10 @@ export const useSensorStore = create<SensorState>((set) => ({
       };
     }),
   setUpdateInterval: (updateInterval) => set({ updateInterval }),
+  setBatteryLevel: (level) =>
+    set((state) => ({ battery: { ...state.battery, level } })),
+  setBatteryState: (batteryState) =>
+    set((state) => ({ battery: { ...state.battery, state: batteryState } })),
+  setLowPowerMode: (lowPowerMode) =>
+    set((state) => ({ battery: { ...state.battery, lowPowerMode } })),
 }));
