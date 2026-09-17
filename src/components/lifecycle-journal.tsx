@@ -8,17 +8,18 @@ import { ThemedView } from './themed-view';
 
 export function LifecycleJournal() {
   const journal = useSensorStore((state) => state.journal);
+  const lifecycleJournal = journal.filter((entry) => entry.type === 'lifecycle');
 
   return (
     <>
       <View style={styles.header}>
         <ThemedText type="smallBold">Journal des transitions</ThemedText>
         <ThemedText type="code" themeColor="textSecondary">
-          {journal.length} evenement{journal.length > 1 ? 's' : ''}
+          {lifecycleJournal.length} evenement{lifecycleJournal.length > 1 ? 's' : ''}
         </ThemedText>
       </View>
       <ThemedView type="backgroundElement" style={styles.card}>
-        {journal.map((entry, index) => (
+        {lifecycleJournal.map((entry, index) => (
           <View key={entry.id} style={styles.row}>
             <View style={styles.timeline}>
               <View
@@ -26,22 +27,14 @@ export function LifecycleJournal() {
                   styles.logDot,
                   {
                     backgroundColor:
-                      entry.type === 'accelerometer' && entry.message === 'actif'
-                        ? lifecycleColors.active
-                        : entry.type === 'lifecycle' && entry.status === 'active'
-                          ? lifecycleColors.active
-                          : lifecycleColors.other,
+                      entry.status === 'active' ? lifecycleColors.active : lifecycleColors.other,
                   },
                 ]}
               />
               {index < journal.length - 1 && <View style={styles.connector} />}
             </View>
             <View style={styles.copy}>
-              <ThemedText type="smallBold">
-                {entry.type === 'accelerometer'
-                  ? `Accéléromètre : ${entry.message}`
-                  : lifecycleLabels[entry.status ?? 'unknown']}
-              </ThemedText>
+              <ThemedText type="smallBold">{lifecycleLabels[entry.status ?? 'unknown']}</ThemedText>
               <ThemedText type="code" themeColor="textSecondary">
                 {formatLifecycleTimestamp(entry.timestamp)}
               </ThemedText>

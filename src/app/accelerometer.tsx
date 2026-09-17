@@ -1,32 +1,29 @@
 import { ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { LifecycleJournal } from '@/components/lifecycle-journal';
-import { LifecycleStatusCard } from '@/components/lifecycle-status-card';
+import { AccelerometerPanel } from '@/components/accelerometer-panel';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-import { useAppLifecycle } from '@/hooks/use-app-lifecycle';
+import { useAccelerometer } from '@/hooks/use-accelerometer';
 
-export default function HomeScreen() {
-  useAppLifecycle();
+export default function AccelerometerScreen() {
+  useAccelerometer();
 
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
         <ScrollView contentContainerStyle={styles.content}>
           <ThemedText type="code" style={styles.eyebrow}>
-            MONITEUR D'APPLICATION
+            CAPTEUR DE MOUVEMENT
           </ThemedText>
           <ThemedText type="subtitle" style={styles.title}>
-            Cycle de vie
+            Accéléromètre
           </ThemedText>
           <ThemedText themeColor="textSecondary" style={styles.intro}>
-            L'etat et les mouvements de l'application sont suivis en temps reel.
+            Les mesures sont suspendues automatiquement lorsque l'application quitte le premier plan.
           </ThemedText>
-
-          <LifecycleStatusCard />
-          <LifecycleJournal />
+          <AccelerometerPanel />
         </ScrollView>
       </SafeAreaView>
     </ThemedView>
@@ -52,7 +49,7 @@ const styles = StyleSheet.create({
     gap: Spacing.three,
   },
   eyebrow: {
-    color: '#d97706',
+    color: '#2563eb',
     letterSpacing: 1.5,
   },
   title: {
@@ -60,6 +57,6 @@ const styles = StyleSheet.create({
   },
   intro: {
     marginTop: -Spacing.two,
-    maxWidth: 360,
+    maxWidth: 380,
   },
 });
